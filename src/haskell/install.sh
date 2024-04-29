@@ -39,6 +39,7 @@ check_packages ca-certificates curl build-essential libffi-dev libffi8ubuntu1 li
 # a spec proposal (but still implemented in Codespaces): https://github.com/devcontainers/spec/blob/main/proposals/features-user-env-variables.md
 # Here's some more examples using it: https://github.com/search?q=org%3Adevcontainers+_REMOTE_USER&type=code
 # We also use /bin/sh as defined in the script hash-bang line instead of $SHELL.
+set -e
 sudo -iu "$_REMOTE_USER" <<EOF
 	# Add some env vars as discussed in https://github.com/devcontainers-contrib/features/pull/94#issuecomment-1330004657
 	export GHCUP_USE_XDG_DIRS=1
@@ -97,6 +98,11 @@ sudo -iu "$_REMOTE_USER" <<EOF
 		fi
 	fi
 EOF
+set +e
+# if [ $? -ne 0 ]; then
+#     echo "sudo -iu command failed"
+#     exit 1
+# fi
 
 # without restarting the shell, ghci location would not be resolved from the updated PATH
 exec $SHELL
